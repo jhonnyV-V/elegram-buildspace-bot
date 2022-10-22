@@ -12,23 +12,13 @@ const main = async () => {
 		console.log('error connecting to database', err);
 	}
 	const bot = new Telegraf(process.env.BOT_TOKEN);
+
 	bot.start((ctx) => {
 		ctx.reply('Welcome');
 	});
+
 	bot.help((ctx) => {
 		ctx.reply('This bot will notify you if you receive one or more buildspace nfts');
-	});
-	bot.on('text', (ctx) => {
-		const rawText = ctx.update.message.text;
-		const checkIfGm = !!rawText.match(/(\bgm\b)/g);
-		const checkIfLocalhost = !!rawText.match(/(\blocalhost\b)/g);
-		if (checkIfGm) {
-			return ctx.reply('gm');
-		}
-		if (checkIfLocalhost) {
-			return ctx.reply('get the fuck of localhost');
-		}
-		return ctx.reply("I can't understand a single word of that");
 	});
 
 	bot.command('subscribe', async (ctx) => {
@@ -59,6 +49,7 @@ const main = async () => {
 			return ctx.reply('failed to subscribe');
 		}
 	});
+
 	bot.command('unsubscribe', async (ctx) => {
 		const result = await User.deleteOne({
 			userId: ctx.update.message.from.id,
@@ -67,6 +58,19 @@ const main = async () => {
 			return ctx.reply('unsubscribed succesfully');
 		}
 		ctx.reply('failed to unsubscribe');
+	});
+
+	bot.on('text', (ctx) => {
+		const rawText = ctx.update.message.text;
+		const checkIfGm = !!rawText.match(/(\bgm\b)/g);
+		const checkIfLocalhost = !!rawText.match(/(\blocalhost\b)/g);
+		if (checkIfGm) {
+			return ctx.reply('gm');
+		}
+		if (checkIfLocalhost) {
+			return ctx.reply('get the fuck of localhost');
+		}
+		return ctx.reply("I can't understand a single word of that");
 	});
 	bot.launch();
 
