@@ -1,11 +1,36 @@
 import { Contract, ethers } from 'ethers';
+import axios from 'axios';
+import User from './user.js';
 import abi from './abi.js';
 
 const callback = async (bot, contract, receiver, tokenId) => {
-	//check if the address is in the database
-	//if the address exist send a message to the user with the nft data
 	//check how to prevent the socket to disconnect
-	//use contract.tokenURI(tokenId) to get the tokenUri
+
+	const users = await User.find({ address: receiver.toLowerCase() });
+
+	if (!users) {
+		return;
+	}
+
+	const uri = await contract.tokenURI(tokenId?.toString() || tokenId);
+
+	const response = await axios.get(uri);
+
+	const metadata = response.data;
+
+	const promises = users.map((user) => {
+		bot.telegram.sendMessage(
+			user.userId,
+			`Hi ${user.name}, the address ${receiver} just got a new nft with id ${tokenId} check it in
+			https://polygonscan.com/token/${process.env.CONTRACT_NFT_ADDRESS}?a=${receiver}`,
+		);
+		return bot.telegram.sendPhoto(
+			user.userId,
+			metadata.image,
+			{ caption: metadata.name },
+		);
+	});
+	await Promise.all(promises);
 };
 
 async function main(bot) {
@@ -16,12 +41,12 @@ async function main(bot) {
   const contract = new Contract(
     `${process.env.CONTRACT_NFT_ADDRESS}`,
     abi,
-    provider.getSigner(),
+    new ethers.VoidSigner(process.env.ADMIN_ADDRESS, provider),
   );
 
-  contract.on('Claim', async (receiver, , , tokenId) => {
+  contract.on('Claim', async (receiver, a, b, tokenId, c) => {
     
-    await transferEvent(bot, contract, receiver, tokenId);
+    await callback(bot, contract, receiver, tokenId);
   });
 }
 

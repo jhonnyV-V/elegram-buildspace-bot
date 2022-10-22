@@ -3,6 +3,7 @@ import { Telegraf } from 'telegraf';
 import { utils } from 'ethers';
 import mongoose from 'mongoose';
 import User from './user.js';
+import eventListener from './eventListener.js';
 
 const main = async () => {
 	try {
@@ -60,8 +61,8 @@ const main = async () => {
 		ctx.reply('failed to unsubscribe');
 	});
 
-	bot.command('user-count', async (ctx) => {
-		if (ctx.update.message.from.id !== process.env.ADMIN_ID) {
+	bot.command('userCount', async (ctx) => {
+		if (`${ctx.update.message.from.id}` !== `${process.env.ADMIN_ID}`) {
 			return ctx.reply('You have no access to this data');
 		}
 		const count = await User.countDocuments();
@@ -86,6 +87,8 @@ const main = async () => {
 		return ctx.reply("I can't understand a single word of that");
 	});
 	bot.launch();
+
+	await eventListener(bot);
 
 	// Enable graceful stop
 	process.once('SIGINT', () => bot.stop('SIGINT'));
