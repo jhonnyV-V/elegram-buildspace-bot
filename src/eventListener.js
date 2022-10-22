@@ -1,10 +1,11 @@
 import { Contract, ethers } from 'ethers';
 import abi from './abi.js';
 
-const callback = async (bot, receiver, tokenId) => {
+const callback = async (bot, contract, receiver, tokenId) => {
 	//check if the address is in the database
 	//if the address exist send a message to the user with the nft data
 	//check how to prevent the socket to disconnect
+	//use contract.tokenURI(tokenId) to get the tokenUri
 };
 
 async function main(bot) {
@@ -20,7 +21,7 @@ async function main(bot) {
 
   contract.on('Claim', async (receiver, , , tokenId) => {
     
-    await transferEvent(bot, receiver, tokenId);
+    await transferEvent(bot, contract, receiver, tokenId);
   });
 }
 
