@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "start:dev": "nodemon --inspect src/index.js"
+    "start": "nodemon --inspect src/index.js"
   },
   "dependencies": {
     "dotenv": "^16.0.3",
