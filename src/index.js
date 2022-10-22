@@ -60,6 +60,19 @@ const main = async () => {
 		ctx.reply('failed to unsubscribe');
 	});
 
+	bot.command('user-count', async (ctx) => {
+		if (ctx.update.message.from.id !== process.env.ADMIN_ID) {
+			return ctx.reply('You have no access to this data');
+		}
+		const count = await User.countDocuments();
+
+		if (!count) {
+			return ctx.reply('no users yet');
+		}
+
+		ctx.reply(`${count} in total`);
+	});
+
 	bot.on('text', (ctx) => {
 		const rawText = ctx.update.message.text;
 		const checkIfGm = !!rawText.match(/(\bgm\b)/g);
