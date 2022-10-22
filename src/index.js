@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { Telegraf } from 'telegraf';
 import { utils } from 'ethers';
+import mongoose from 'mongoose';
 import User from './user.js';
 
 const main = async () => {
