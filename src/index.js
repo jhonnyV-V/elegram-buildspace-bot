@@ -15,11 +15,11 @@ const main = async () => {
 	const bot = new Telegraf(process.env.BOT_TOKEN);
 
 	bot.start((ctx) => {
-		ctx.reply('Welcome');
+		ctx.reply('Welcome to this bot, use /help to see how to use the commands');
 	});
 
 	bot.help((ctx) => {
-		ctx.reply('This bot will notify you if you receive one or more buildspace nfts');
+		ctx.reply('/subscribe <address> to receive notifications when you receive a buildspace nft\n/unsubscribe stop notifications\n/help to display this message');
 	});
 
 	bot.command('subscribe', async (ctx) => {
