@@ -5,6 +5,8 @@ import mongoose from 'mongoose';
 import User from './user.js';
 import eventListener from './eventListener.js';
 
+console.log(process.env);
+
 const main = async () => {
 	try {
 		if (!process.env.MONGO_PASSWORD) {
