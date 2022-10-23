@@ -7,7 +7,19 @@ import eventListener from './eventListener.js';
 
 const main = async () => {
 	try {
-		await mongoose.connect(`${process.env.MONGO_CONNECTION}`);
+		if (!process.env.MONGO_PASSWORD) {
+			await mongoose.connect(`${process.env.MONGO_CONNECTION}`,{
+				useNewUrlParser: true,
+				useUnifiedTopology: true
+			});
+		} else {
+			await mongoose.connect(`${process.env.MONGO_CONNECTION}`,{
+				user: process.env.MONGO_USER,
+				pass: process.env.MONGO_PASSWORD,
+				useNewUrlParser: true,
+				useUnifiedTopology: true
+			});
+		}
 	} catch (err) {
 		//use proper log method
 		console.log('error connecting to database', err);
