@@ -5,7 +5,8 @@ import mongoose from 'mongoose';
 import User from './user.js';
 import eventListener from './eventListener.js';
 
-console.log(process.env);
+console.log('process.env', process.env);
+console.log('mongo connection', process.env.MONGO_CONNECTION);
 
 const main = async () => {
 	try {
