@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { Bot } from "grammy";
+import { Bot, webhookCallback } from "grammy";
 import { utils } from 'ethers';
 import mongoose from 'mongoose';
 import express from 'express';
