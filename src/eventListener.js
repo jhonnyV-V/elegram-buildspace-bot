@@ -19,12 +19,12 @@ const callback = async (bot, contract, receiver, tokenId) => {
 	const metadata = response.data;
 
 	const promises = users.map((user) => {
-		bot.telegram.sendMessage(
+		bot.api.sendMessage(
 			user.userId,
 			`Hi ${user.name}, the address ${receiver} just got a new nft with id ${tokenId} check it in
 			https://polygonscan.com/token/${process.env.CONTRACT_NFT_ADDRESS}?a=${receiver}`,
 		);
-		return bot.telegram.sendPhoto(
+		return bot.api.sendPhoto(
 			user.userId,
 			metadata.image,
 			{ caption: metadata.name },
