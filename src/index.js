@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { Bot } from "grammy";
 import { utils } from 'ethers';
 import mongoose from 'mongoose';
+import express from 'express';
 import User from './user.js';
 import eventListener from './eventListener.js';
 
